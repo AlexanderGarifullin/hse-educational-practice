@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MyWeb.ExcelGenerator" Collapsed="true">
+    <Position X="2.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ExcelGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.AppDBContent" Collapsed="true">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIACDAAAAAAAAEQAAAAAAAGQAAAAAAAICAYAghQAAA=</HashCode>
+      <FileName>AppDBContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Controllers.AuthorisationController" Collapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\AuthorisationController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Controllers.ContestController" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAIBoAABAAAAAAAABAQBAAAAAEAAAAABAA=</HashCode>
+      <FileName>Controllers\ContestController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Controllers.HomeController" Collapsed="true">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BACAAAAIABAABQAAgAAAAAAAIAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Controllers.LessonsController" Collapsed="true">
+    <Position X="4.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAhEAAAAAAAAAABAgAAAgAAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\LessonsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Controllers.OlympiadsController" Collapsed="true">
+    <Position X="6.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAIAAAAAAAAIBAABAIAAAAAAAACAAAAAAQMAEAAAAAA=</HashCode>
+      <FileName>Controllers\OlympiadsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Controllers.StudentsController" Collapsed="true">
+    <Position X="8.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAFBAAEAAACAAAAAAAAAAAAAQMEAAAAAAA=</HashCode>
+      <FileName>Controllers\StudentsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Controllers.TasksController" Collapsed="true">
+    <Position X="4.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAOBAAAAABAAAAAAAAABAABAAgAIAAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\TasksController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Controllers.TeachersController" Collapsed="true">
+    <Position X="6.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAEgIAAAAAAAAAAAAAAAAQEAAAQAAAA=</HashCode>
+      <FileName>Controllers\TeachersController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Controllers.TeamsController" Collapsed="true">
+    <Position X="8.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQBAAAAAACAAAAAAAQAAAAAQMEAAEAAAA=</HashCode>
+      <FileName>Controllers\TeamsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.ContestModel" Collapsed="true">
+    <Position X="1.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAIAAAAAACAAAAABBAAAAAAAAAAAAIEAAAAAIAAAA=</HashCode>
+      <FileName>Models\ContestModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.ErrorViewModel" Collapsed="true">
+    <Position X="3" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ErrorViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.FirstDifficultyModel" Collapsed="true">
+    <Position X="4.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAARAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\FirstDifficultyModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.LessonModel" Collapsed="true">
+    <Position X="6.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAUABAAAAAAEAAAABABACAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Models\LessonModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.OlympiadModel" Collapsed="true">
+    <Position X="8.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAIIAABIAAAgAAAABIAAoAAIAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Models\OlympiadModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.ParticipantModel" Collapsed="true">
+    <Position X="1.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAEAAAAAQAAAAEAAAAACgAAAgIAAAAAAAAACAgA=</HashCode>
+      <FileName>Models\ParticipantModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.ParticipantOlympiadModel" Collapsed="true">
+    <Position X="3" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAEAAAgRAAAAIAQEAAAQAoAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Models\ParticipantOlympiadModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.SecondDifficultyModel" Collapsed="true">
+    <Position X="4.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIBAAACAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\SecondDifficultyModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.SolutionModel" Collapsed="true">
+    <Position X="6.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAQAAAAAAAAAAAABABAAAAAQAoAAAACIAAAAAAgA=</HashCode>
+      <FileName>Models\SolutionModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.StudentModel" Collapsed="true">
+    <Position X="8.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAAEAAAAYABAAAAAEQAAAAAAAAIAAAAAAAAAgCAgg=</HashCode>
+      <FileName>Models\StudentModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.StudyGroupModel" Collapsed="true">
+    <Position X="1.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAgE=</HashCode>
+      <FileName>Models\StudyGroupModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.TaskContestModel" Collapsed="true">
+    <Position X="3" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAAAAAAAAAAAAAABAAAAAgwAAAIEAAAAABAAgA=</HashCode>
+      <FileName>Models\TaskContestModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.TaskModel" Collapsed="true">
+    <Position X="4.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAABAggAAgAEAQABAAAAAgAAACAAAAAAAAAAgg=</HashCode>
+      <FileName>Models\TaskModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.TaskThemeModel" Collapsed="true">
+    <Position X="6.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAEEAABgAAAAAAQAAAAAAAAgAAAAIAAAAAEAAAgA=</HashCode>
+      <FileName>Models\TaskThemeModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.TeacherModel" Collapsed="true">
+    <Position X="8.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAEAAAAYAAAAgAAFQCAAAAAAAAAAAAAAAgAgAAAg=</HashCode>
+      <FileName>Models\TeacherModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.TeamModel" Collapsed="true">
+    <Position X="1.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAADAAAEAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Models\TeamModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.ThemeModel" Collapsed="true">
+    <Position X="3" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAEAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ThemeModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyWeb.Models.UserModel" Collapsed="true">
+    <Position X="4.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAEQAAABkAAAAAAAACAAAAAgAAAAA=</HashCode>
+      <FileName>Models\UserModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

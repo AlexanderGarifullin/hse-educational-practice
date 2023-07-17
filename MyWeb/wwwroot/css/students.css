@@ -1,0 +1,18 @@
+﻿.button-container {
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+
+
+.actions-cell button {
+    margin-right: 5px;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+}
+
+.row-btn {
+    justify-content: flex-end;
+}

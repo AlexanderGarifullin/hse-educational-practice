@@ -1,0 +1,48 @@
+﻿@model UserModel
+
+<link rel="stylesheet" href="~/css/login.css" />
+
+<body>
+    <div id="fullPage">
+        <div id="brandingWrapper" class="float">
+            <div id="branding" class="illustrationClass"></div>
+        </div>
+        <div id="contentWrapper" class="float">
+            <div id="content">
+                <div id="header">
+                    <h1>Авторизация</h1>
+                </div>
+                <main>
+                    <div id="workArea">
+                        <div id="authArea" class="groupMargin">
+                            <div id="loginArea">
+                                <div id="loginMessage" class="groupMargin"></div>
+                                <form method="post" id="loginForm" autocomplete="off" asp-controller="Authorisation" asp-action="Check">                             
+                                        <span id="errorText" for aria-live="assertive" role="alert">@ViewBag.ErrorMessage</span>  
+                                    <div id="formsAuthentificationArea">
+                                        <div id="userNameArea">
+                                            <label asp-for="Username" id="userNameInputLabel" for="userNameInput" class="hidden">Учетная запись пользователя</label>
+                                             <input asp-for="Username" id="userNameInput" name="Username" value="@ViewBag.UserName" tabindex="1" class="text fullWidth" spellcheck="false" placeholder="Enter login" autocomplete="off">
+                                          </div>
+                                        <div id="passwordArea">
+                                            <label asp-for="Password" id="passwordInputLabel" for="passwordInput" class="hidden">Пароль</label>
+                                            <input asp-for="Password" id="passwordInput" name="Password" type="password" tabindex="2" class="text fullWidth" placeholder="Enter Password" autocomplete="off" value="@ViewBag.Password">
+                                        </div>
+                                        <div id="submissionArea" class="submitMargin">
+                                            <input type="submit" id="submitButton" class="submit" tabindex="4" value="Вход">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <div id="footerPlaceholder">
+                    <p>
+                        НИУ ВШЭ Пермь 2023
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

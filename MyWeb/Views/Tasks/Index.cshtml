@@ -1,0 +1,233 @@
+﻿@model List<TaskModel>
+
+@{
+    Layout = "_Layout";
+}
+<html>
+    <head>
+          <meta charset="UTF-8">
+            <link rel="stylesheet" href="~/css/tasks.css" />
+    </head>
+    <body>
+        <div class="button-container">
+            <button type="button" id="addTaskButton" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Добавить</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal">Фильтр</button>
+            <button type="button" id="clearFilterButton" class="btn btn-danger" style="display: none;">Очистить фильтр</button>
+        </div>
+
+         <table id="tasksTable" class="table">
+            <thead>
+                <tr>
+                    <th>Задача</th>
+                    <th>Первая сложность</th>
+                    <th>RP</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var task in Model)
+            {
+                                     <tr data-id="@task.TaskID">
+                                    <td>@task.CodeforcesTaskID</td>
+                                            <td>@(Math.Round(task.FirstDifficulty.Coefficient, 1))</td>
+                                            <td>@task.SecondDifficulty.TaskWeight</td>
+                                    <td class="actions-cell" style="text-align: right;">
+                                                    <button type="button" class="btn btn-primary task-trigger" data-toggle="modal" data-target="#themeModal" data-task-id="@task.TaskID">Темы</button>
+                                            <button type="button" class="btn btn-primary edit-trigger" data-toggle="modal" data-target="#editModal" data-task-id="@task.TaskID">Изменить</button>
+                                                        <button type="button" class="btn btn-danger" data-id="@task.TaskID" onclick="deleteTask(this.getAttribute('data-id'))">Удалить</button>
+                                    </td>
+                                </tr>
+            }
+            </tbody>
+        </table>
+
+
+         <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filterModalLabel">Фильтр</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                             <div class="form-group">
+                                <label for="taskFilter">Задача</label>
+                                <input type="text" class="form-control" id="taskFilter">
+                            </div>
+                             <div class="form-group">
+                                <label for="firstDifficultySelect">Группа</label>
+                                <select class="form-control" id="firstDifficultySelect">
+                                    <option value="">-- Выберите первую сложность --</option>
+                                        @foreach (var firstDifficulty in ViewBag.FirstDifficulties)
+                                        {
+                                            <option value="@firstDifficulty.FirstDifficultyID">@(Math.Round(firstDifficulty.Coefficient, 1))</option>
+                                        }
+                                </select>
+                            </div>
+                             <div class="form-group">
+                                <label for="secondDifficultySelect">Группа</label>
+                                <select class="form-control" id="secondDifficultySelect">
+                                    <option value="">-- Выберите RP --</option>
+                                @foreach (var secondDifficulty in ViewBag.SecindDifficulties)
+                                {
+                                                   <option value="@secondDifficulty.SecondDifficultyID">@($"{secondDifficulty.TaskWeight}")</option>
+                                }
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="applyFilter()">Применить</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addModalLabel">Добавить элемент</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                                <div class="modal-body">
+                                    <form id="addForm">
+                                       <div class="form-group">
+                                    <label for="addTask">Задача</label>
+                                    <input type="text" class="form-control" id="addTask" placeholder="Введите задачу" required>
+                                     <div id="addTaskError" class="error-message"></div>
+                                </div>
+                          
+                                <div class="form-group">
+                                    <label for="addFirstDifSelect">Первая сложность</label>
+                                    <select class="form-control" id="addFirstDifSelect">
+                                         <option value="">-- Выберите первую сложность --</option>
+                                            @foreach (var firstDifficulty in ViewBag.FirstDifficulties)
+                                            {
+                                               <option value="@firstDifficulty.FirstDifficultyID">@(Math.Round(firstDifficulty.Coefficient, 1))</option>
+                                            }
+                                    </select>
+                                    <div id="addFirstDifSelectError" class="error-message"></div>
+                                </div>
+                                 <div class="form-group">
+                                    <label for="addSecondDifSelect">RP</label>
+                                    <select class="form-control" id="addSecondDifSelect">
+                                <option value="">-- Выберите RP --</option>
+                                        @foreach (var secondDifficulty in ViewBag.SecindDifficulties)
+                                        {
+                                           <option value="@secondDifficulty.SecondDifficultyID">@($"{secondDifficulty.TaskWeight}")</option>
+                                        }
+                                    </select>
+                                    <div id="addSecondDifSelectError" class="error-message"></div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="addTaskFromModal" class="btn btn-primary">Добавить</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Изменить элемент</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editForm">
+                                 <input type="hidden" id="taskId" value="" />
+                           <div class="form-group">
+                                    <label for="editTask">Задача</label>
+                                    <input type="text" class="form-control" id="editTask" placeholder="Введите задачу" required>
+                                    <div id="editTaskError" class="error-message"></div>
+                                </div>
+                            <div class="form-group">
+                                <label for="editFirstDifSelect">Первая сложность</label>
+                                <select class="form-control" id="editFirstDifSelect">
+                                <option value="">-- Выберите первую сложность --</option>
+                                @foreach (var firstDifficulty in ViewBag.FirstDifficulties)
+                                {
+                                                   <option value="@firstDifficulty.FirstDifficultyID">@(Math.Round(firstDifficulty.Coefficient, 1))</option>
+                                }
+                                  </select>
+                                <div id="editFirstDifSelectError" class="error-message"></div>
+                            </div>
+
+                             <div class="form-group">
+
+                                <label for="editSecondDifSelect">RP</label>
+                                <select class="form-control" id="editSecondDifSelect">
+                              <option value="">-- Выберите RP --</option>
+                                @foreach (var secondDifficulty in ViewBag.SecindDifficulties)
+                                {
+                                               <option value="@secondDifficulty.SecondDifficultyID">@($"{secondDifficulty.TaskWeight}")</option>
+                                }
+                                </select>
+                                <div id="editSecondDifSelectError" class="error-message"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="saveChangesBtn" class="btn btn-primary">Сохранить</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="themeModal" tabindex="-1" role="dialog" aria-labelledby="themeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="teamModalLabel">Темы задачи</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <input type="hidden" id="taskId" value="" />
+          <div class="table-responsive">
+            <table id="themeTable" class="table table-sm">
+              <tbody></tbody>
+            </table>
+          </div>
+        </form>
+        <div id="errorMessage" style="color: red;"></div> <!-- Элемент для отображения сообщения об ошибке -->
+      </div>
+      <div class="modal-footer">
+        <label for="themeSelect">Тема</label>
+        <select class="form-control" id="themeSelect">
+                  <option value="">-- Выберите тему --</option>
+                        @foreach (var theme in ViewBag.Themes)
+                        {
+                                <option value="@theme.ThemeID">@theme.ThemeName</option>
+                        }
+        </select>
+        <div class="button-group">
+          <button type="button" class="btn btn-primary" id="addThemeButton">Добавить тему</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+        <script src="~/js/tasks.js"></script>
+    </body>
+</html>

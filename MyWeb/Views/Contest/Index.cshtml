@@ -1,0 +1,260 @@
+﻿@model List<ContestModel>
+
+
+@{
+    Layout = "_Layout";
+}
+
+<html>
+    <head>
+             <meta charset="UTF-8">
+            <link rel="stylesheet" href="~/css/contest.css" />
+    </head>
+    <body>
+          <div class="button-container">
+            <button type="button" id="addContestButton" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Добавить</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal">Фильтр</button>
+            <button type="button" id="clearFilterButton" class="btn btn-danger" style="display: none;">Очистить фильтр</button>
+        </div>
+
+         <table id="contestTable" class="table">
+            <thead>
+                <tr>
+                    <th>Контест</th>
+                    <th>Длительность</th>
+                    <th>Тип участия</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var contest in Model)
+            {
+                                          <tr data-id="@contest.ContestId">
+                                            <td>@contest.ContestName</td>
+                                          <td>@contest.Duration</td>
+                                           <td>@contest.ParticipationType</td>
+                                            <td class="actions-cell" style="text-align: right;">
+                                               <button type="button" class="btn btn-primary contest-trigger" data-toggle="modal" data-target="#taskModal" data-contest-id="@contest.ContestId">Задачи</button>
+                                              <button type="button" class="btn btn-primary contest-trigger" data-toggle="modal" data-target="#resultModal" data-contest-id="@contest.ContestId">Положение</button>
+              <button type="button" class="btn btn-primary edit-trigger" data-toggle="modal" data-target="#editModal" data-contest-id="@contest.ContestId">Изменить</button>
+                                               <button type="button" class="btn btn-danger" data-id="@contest.ContestId" onclick="deleteContest(this.getAttribute('data-id'))">Удалить</button>
+                                            </td>
+                                        </tr>
+            }
+            </tbody>
+        </table>
+
+
+          <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filterModalLabel">Фильтр</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                             <div class="form-group">
+                                <label for="contestFilter">Контест</label>
+                                <input type="text" class="form-control" id="contestFilter">
+                            </div>
+                              <div class="form-group">
+                                <label for="durationFilter">Длительность</label>
+                                <input type="text" class="form-control" id="durationFilter">
+                            </div>
+                             <div class="form-group">
+                                <label for="typeSelect">Тип участия</label>
+                                <select class="form-control" id="typeSelect">
+                                    <option value="">-- Выберите тип участия --</option>
+                                     <option value="Командный">Командный</option>
+                                 <option value="Индивидуальный">Индивидуальный</option>
+                                 </select>
+                            </div>    
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="applyFilter()">Применить</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+           <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addModalLabel">Добавить элемент</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                                <div class="modal-body">
+                                    <form id="addForm">
+                                       <div class="form-group">
+                                             <label for="addContest">Контест</label>
+                                              <input type="text" class="form-control" id="addContest" placeholder="Введите контест" required>
+                                              <div id="addContestError" class="error-message"></div>
+                                        </div>
+
+                                  <div class="form-group">
+                                    <label for="addDuration">Длительность</label>
+                                    <input type="text" class="form-control" id="addDuration" placeholder="Введите длительность" required>
+                                     <div id="addDurationError" class="error-message"></div>
+                                 </div>
+
+                                <div class="form-group">
+                                    <label for="addTypeSelect">Тип участия</label>
+                                    <select class="form-control" id="addTypeSelect">
+                                             <option value="">-- Выберите тип участия --</option>
+                                             <option value="Командный">Командный</option>
+                                            <option value="Индивидуальный">Индивидуальный</option>
+                                    </select>
+                                    <div id="addTypeSelectError" class="error-message"></div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="addContestFromModal" class="btn btn-primary">Добавить</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+               <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Изменить элемент</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editForm">
+                                 <input type="hidden" id="contestId" value="" />
+                           <div class="form-group">
+                                    <label for="editContest">Контест</label>
+                                    <input type="text" class="form-control" id="editContest" placeholder="Введите контест" required>
+                                    <div id="editContestError" class="error-message"></div>
+                                </div>
+
+                                  <div class="form-group">
+                                    <label for="editDuration">Длительность</label>
+                                    <input type="text" class="form-control" id="editDuration" placeholder="Введите длительность" required>
+                                     <div id="editDurationError" class="error-message"></div>
+                                     </div>
+
+
+                                   <div class="form-group">
+                                    <label for="editTypeSelect">Тип участия</label>
+                                    <select class="form-control" id="editTypeSelect">
+                                             <option value="">-- Выберите тип участия --</option>
+                                             <option value="Командный">Командный</option>
+                                            <option value="Индивидуальный">Индивидуальный</option>
+                                    </select>
+                                    <div id="editTypeSelectError" class="error-message"></div>
+                                </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="saveChangesBtn" class="btn btn-primary">Сохранить</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+          <div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="tasktModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="tasktModalLabel">Задачи контеста</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <input type="hidden" id="contestId" value="" />
+                      <div class="table-responsive">
+                        <table id="taskTable" class="table table-sm">
+                          <tbody></tbody>
+                        </table>
+                      </div>
+                    </form>
+                    <div id="errorMessage" style="color: red;"></div> <!-- Элемент для отображения сообщения об ошибке -->
+                  </div>
+                  <div class="modal-footer">
+                    <label for="taskSelect">Задача</label>
+                    <select class="form-control" id="taskSelect">
+                                    @foreach (var task in ViewBag.Tasks)
+                                    {
+                                                <option value="@task.TaskID">@(task.CodeforcesTaskID)</option>
+                                    }
+                    </select>
+                    <div class="button-group">
+                      <button type="button" class="btn btn-primary" id="addTaskButton">Добавить задачу</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+                <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg" role="document"> <!-- Добавлен класс modal-lg -->
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="resultModalLabel">Положение контеста</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form>
+                              <input type="hidden" id="contestId" value="" />
+                              <div class="table-responsive">
+                                  <table id="resultTable" class="table table-sm">
+                                        <thead>
+                                          <tr>
+                          
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        
+                                        </tbody>
+                                      </table>
+                                </table>
+                              </div>
+                            </form>
+                            <div id="errorMessageStudent" style="color: red;"></div> <!-- Элемент для отображения сообщения об ошибке -->
+                          </div>
+                          <div class="modal-footer">
+                            <label for="studentSelect">Студент</label>
+                            <select class="form-control" id="studentSelect">
+                                            @foreach (var student in ViewBag.Students)
+                                            {
+                                                <option value="@student.StudentID">@(student.LastName + " " + student.FirstName + " " + student.MiddleName + ": " + student.CodeforcesNickname)</option>
+                                            }
+                            </select>
+                            <div class="button-group">
+                              <button type="button" class="btn btn-primary" id="addStudentButton">Добавить студента</button>
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+    </body>
+      <script src="~/js/contest.js"></script>
+</html>

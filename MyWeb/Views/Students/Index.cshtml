@@ -1,0 +1,235 @@
+﻿@model List<StudentModel>
+
+@{
+    Layout = "_Layout";
+}
+<html>
+    <head>
+           <meta charset="UTF-8">
+            <link rel="stylesheet" href="~/css/students.css" />
+    </head>
+    <body>
+         <div class="button-container">
+            <button type="button" id="addLessonButton" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Добавить</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal">Фильтр</button>
+            <button type="button" id="clearFilterButton" class="btn btn-danger" style="display: none;">Очистить фильтр</button>
+        </div>
+
+
+        <table id="studentTable" class="table">
+            <thead>
+                <tr>
+                    <th>Студент</th>
+                    <th>Ник</th>
+                    <th>Группа</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                    @foreach (var student in Model)
+                    {
+                        <tr data-id="@student.StudentID">
+                            <td>@(student.LastName + " " + student.FirstName + " " + student.MiddleName)</td>
+                            <td>@student.CodeforcesNickname</td>
+                            <td>@student.Group.GroupName</td>
+                            <td class="actions-cell">
+                                <button type="button" class="btn btn-primary team-trigger" data-toggle="modal" data-target="#teamModal" data-student-id="@student.StudentID">Команды</button>
+                                    <button type="button" class="btn btn-primary edit-trigger" data-toggle="modal" data-target="#editModal" data-student-id="@student.StudentID">Изменить</button>
+                                <button type="button" class="btn btn-danger" data-id="@student.StudentID" onclick="deleteStudent(this.getAttribute('data-id'))">Удалить</button>
+                            </td>
+                        </tr>
+                    }
+            </tbody>
+        </table>
+
+<div class="modal fade" id="teamModal" tabindex="-1" role="dialog" aria-labelledby="teamModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="teamModalLabel">Команды студента</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <input type="hidden" id="studentId" value="" />
+          <div class="table-responsive">
+            <table id="teamTable" class="table table-sm">
+              <tbody></tbody>
+            </table>
+          </div>
+        </form>
+        <div id="errorMessage" style="color: red;"></div> <!-- Элемент для отображения сообщения об ошибке -->
+      </div>
+      <div class="modal-footer">
+        <label for="teamSelect">Команда</label>
+        <select class="form-control" id="teamSelect">
+                        @foreach (var team in ViewBag.Teams)
+                        {
+                <option value="@team.TeamID">@team.TeamName</option>
+                        }
+        </select>
+        <div class="button-group">
+          <button type="button" class="btn btn-primary" id="addTeamButton">Добавить команду</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+            <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filterModalLabel">Фильтр</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                             <div class="form-group">
+                                <label for="studentFilter">Студент</label>
+                                <input type="text" class="form-control" id="studentFilter">
+                            </div>
+                            <div class="form-group">
+                                <label for="nicknameFilter">Ник</label>
+                                <input type="text" class="form-control" id="nicknameFilter">
+                            </div>
+                             <div class="form-group">
+                                <label for="groupSelect">Группа</label>
+                                <select class="form-control" id="groupSelect">
+                                    <option value="">-- Выберите группу --</option>
+                                @foreach (var group in ViewBag.Groups)
+                                {
+                                   <option value="@group.GroupID">@($"{group.GroupName}")</option>
+                                }
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="applyFilter()">Применить</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addModalLabel">Добавить элемент</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                                <div class="modal-body">
+                                    <form id="addForm">
+                                       <div class="form-group">
+                                    <label for="addLastName">Фамилия</label>
+                                    <input type="text" class="form-control" id="addLastName" placeholder="Введите фамилию" required>
+                                     <div id="addLastNameError" class="error-message"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addFirstName">Имя</label>
+                                    <input type="text" class="form-control" id="addFirstName" placeholder="Введите имя" required>
+                                     <div id="addFirstNameError" class="error-message"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addMiddleName">Отчество</label>
+                                    <input type="text" class="form-control" id="addMiddleName" placeholder="Введите отчество" required>
+                                    <div id="addMiddleNameError" class="error-message"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addNickname">Ник</label>
+                                    <input type="text" class="form-control" id="addNickname" placeholder="Введите ник" >
+                                    <div id="addNicknameError" class="error-message"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addGroupSelect">Группа</label>
+                                    <select class="form-control" id="addGroupSelect">
+                                        <option value="">-- Выберите группу --</option>
+                                            @foreach (var group in ViewBag.Groups)
+                                            {
+                                      <option value="@group.GroupID">@($"{group.GroupName}")</option>
+                                            }
+                                    </select>
+                                    <div id="addGroupSelectError" class="error-message"></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="addStudentFromModal" class="btn btn-primary">Добавить</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Изменить элемент</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editForm">
+                                 <input type="hidden" id="studentId" value="" />
+                           <div class="form-group">
+                                    <label for="editLastName">Фамилия</label>
+                                    <input type="text" class="form-control" id="editLastName" placeholder="Введите фамилию" required>
+                                    <div id="editLastNameError" class="error-message"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editFirstName">Имя</label>
+                                    <input type="text" class="form-control" id="editFirstName" placeholder="Введите имя" required>
+                                    <div id="editFirstNameError" class="error-message"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editMiddleName">Отчество</label>
+                                    <input type="text" class="form-control" id="editMiddleName" placeholder="Введите отчество" required>
+                                    <div id="editMiddleNameError" class="error-message"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editNickname">Ник</label>
+                                    <input type="text" class="form-control" id="editNickname" placeholder="Введите ник">
+                                    <div id="editNicknameError" class="error-message"></div>
+                                </div>
+                            <div class="form-group">
+                                <label for="editGroupSelect">Преподаватель</label>
+                                <select class="form-control" id="editGroupSelect">
+                                    <option value="">-- Выберите группу --</option>
+                                            @foreach (var group in ViewBag.Groups)
+                                            {
+                                      <option value="@group.GroupID">@($"{group.GroupName}")</option>
+                                            }
+                                </select>
+                                <div id="editGroupSelectError" class="error-message"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="saveChangesBtn" class="btn btn-primary">Сохранить</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <script src="~/js/students.js"></script>
+    </body>
+</html>

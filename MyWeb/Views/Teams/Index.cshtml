@@ -1,0 +1,167 @@
+﻿@model List<TeamModel>
+
+@{
+    Layout = "_Layout";
+}
+<html>
+    <head>
+         <meta charset="UTF-8">
+            <link rel="stylesheet" href="~/css/teams.css" />
+    </head>
+    <body>
+        
+         <div class="button-container">
+            <button type="button" id="addTeamButton" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Добавить</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal">Фильтр</button>
+            <button type="button" id="clearFilterButton" class="btn btn-danger" style="display: none;">Очистить фильтр</button>
+        </div>
+
+
+        <table id="teamsTable" class="table">
+            <thead>
+                <tr>
+                    <th>Команда</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var team in Model)
+            {
+                                 <tr data-id="@team.TeamID">
+                                <td>@team.TeamName</td>
+                                <td class="actions-cell" style="text-align: right;">
+                                        <button type="button" class="btn btn-primary student-trigger" data-toggle="modal" data-target="#studentModal" data-team-id="@team.TeamID">Состав</button>
+                                    <button type="button" class="btn btn-primary edit-trigger" data-toggle="modal" data-target="#editModal" data-team-id="@team.TeamID">Изменить</button>
+                                        <button type="button" class="btn btn-danger" data-id="@team.TeamID" onclick="deleteTeam(this.getAttribute('data-id'))">Удалить</button>
+                                </td>
+                            </tr>
+            }
+            </tbody>
+        </table>
+
+
+
+
+            <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filterModalLabel">Фильтр</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                             <div class="form-group">
+                                <label for="teamFilter">Команда</label>
+                                <input type="text" class="form-control" id="teamFilter">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="applyFilter()">Применить</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+          <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addModalLabel">Добавить элемент</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                                <div class="modal-body">
+                                    <form id="addForm">
+                                       <div class="form-group">
+                                            <label for="addTeam">Команда</label>
+                                            <input type="text" class="form-control" id="addTeam" placeholder="Введите название команды" required>
+                                             <div id="addTeamError" class="error-message"></div>
+                                         </div>    
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="addTeamFromModal" class="btn btn-primary">Добавить</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+               <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Изменить элемент</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editForm">
+                                 <input type="hidden" id="teamId" value="" />
+                           <div class="form-group">
+                                    <label for="editTeam">Команда</label>
+                                    <input type="text" class="form-control" id="editTeam" placeholder="Введите название команды" required>
+                                    <div id="editTeamError" class="error-message"></div>
+                                </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="saveChangesBtn" class="btn btn-primary">Сохранить</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    <div class="modal fade" id="studentModal" tabindex="-1" role="dialog" aria-labelledby="studentModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="studentModalLabel">Состав команды</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <input type="hidden" id="teamId" value="" />
+          <div class="table-responsive">
+            <table id="studentsTable" class="table table-sm">
+              <tbody></tbody>
+            </table>
+          </div>
+        </form>
+        <div id="errorMessage" style="color: red;"></div> <!-- Элемент для отображения сообщения об ошибке -->
+      </div>
+      <div class="modal-footer">
+        <label for="studentSelect">Студент</label>
+        <select class="form-control" id="studentSelect">
+                        @foreach (var student in ViewBag.Students)
+                        {
+                    <option value="@student.StudentID">@(student.LastName + " " + student.FirstName + " " + student.MiddleName + ": " + student.CodeforcesNickname)</option>
+                        }
+        </select>
+        <div class="button-group">
+          <button type="button" class="btn btn-primary" id="addStudentButton">Добавить студента</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+         <script src="~/js/teams.js"></script>
+    </body>
+</html>

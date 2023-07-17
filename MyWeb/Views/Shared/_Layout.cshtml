@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="~/js/site.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div id="oe_menu" class="oe_wrapper" style="display:block;">
+            <ul id="oe_menu_user" class="oe_menu" style="float:right;">
+                <li class="rightmenu">
+                    <span>@ViewBag.UserName</span>
+                </li>
+                <li class="rightmenu btn">
+                    <span onclick="logout()">Выход</span>
+                </li>
+            </ul>
+            <ul id="oe_menu_main" class="oe_menu2" style="float:left;">
+                <li class="leftmenu btn">
+                    <span id="home" class="menu-item" onclick="goReports('home')">Отчеты</span>
+                </li>
+                <li class="leftmenu btn">
+                    <span id="lessons" class="menu-item" onclick="goReports('lessons')">Занятия</span>
+                </li>
+                <li class="leftmenu btn">
+                    <span id="teachers" class="menu-item"  onclick="goReports('teachers')">Преподаватели</span>
+                </li>
+                <li class="leftmenu btn">
+                    <span id="students"class="menu-item"  onclick="goReports('students')">Студенты</span>
+                </li>
+                <li class="leftmenu btn">
+                    <span id="teams" class="menu-item" onclick="goReports('teams')">Команды</span>
+                </li>
+                <li class="leftmenu btn">
+                    <span id="olympiads" class="menu-item" onclick="goReports('olympiads')">Олимпиады</span>
+                </li>
+                <li class="leftmenu btn">
+                    <span id="contest" class="menu-item" onclick="goReports('contest')">Контесты</span>
+                </li>
+                <li class="leftmenu btn">
+                    <span id="tasks" class="menu-item" onclick="goReports('tasks')">Задачи</span>
+                </li>
+            </ul>
+        </div>
+        <div id="renderbody">
+            @RenderBody()
+        </div>
+    </div>
+</body>
+</html>

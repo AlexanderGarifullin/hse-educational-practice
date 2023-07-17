@@ -1,0 +1,248 @@
+﻿@model List<OlympiadModel>
+
+@{
+    Layout = "_Layout";
+}
+
+<html>
+    <head>
+          <meta charset="UTF-8">
+            <link rel="stylesheet" href="~/css/olympiads.css" />
+    </head>
+    <body>
+          <div class="button-container">
+            <button type="button" id="addTaskButton" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Добавить</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal">Фильтр</button>
+            <button type="button" id="clearFilterButton" class="btn btn-danger" style="display: none;">Очистить фильтр</button>
+        </div>
+
+         <table id="olympiadTable" class="table">
+            <thead>
+                <tr>
+                    <th>Олимпиада</th>
+                    <th>Тип</th>
+                    <th>Год</th>
+                    <th>BP</th>
+                      <th>BP за задачу</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var olympiad in Model)
+            {
+                                             <tr data-id="@olympiad.OlympiadID">
+                                                <td>@olympiad.OlympiadName</td>
+                                                        <td>@olympiad.ParticipationType</td>
+                                                                  <td>@olympiad.Year</td>
+                                                            <td>@(Math.Round(olympiad.BaseWeight, 1))</td>
+                                                            <td>@(Math.Round(olympiad.WeightPerProblem, 1))</td>
+                                        <td class="actions-cell" style="text-align: right;">
+                                                                    <button type="button" class="btn btn-primary olympiad-trigger" data-toggle="modal" data-target="#resultModal" data-olympiad-id="@olympiad.OlympiadID">Положение</button>
+                                                    <button type="button" class="btn btn-primary edit-trigger" data-toggle="modal" data-target="#editModal" data-olympiad-id="@olympiad.OlympiadID">Изменить</button>
+                                                                    <button type="button" class="btn btn-danger" data-id="@olympiad.OlympiadID" onclick="deleteOlympiad(this.getAttribute('data-id'))">Удалить</button>
+                                        </td>
+                                    </tr>
+            }
+            </tbody>
+        </table>
+
+        <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filterModalLabel">Фильтр</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                             <div class="form-group">
+                                <label for="olympiadFilter">Олимпиада</label>
+                                <input type="text" class="form-control" id="olympiadFilter">
+                            </div>
+                             <div class="form-group">
+                                <label for="typeSelect">Тип участия</label>
+                                <select class="form-control" id="typeSelect">
+                                    <option value="">-- Выберите тип участия --</option>
+                                     <option value="Командный">Командный</option>
+                                 <option value="Индивидуальный">Индивидуальный</option>
+                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="yearFilter">Год</label>
+                                <input type="text" class="form-control" id="yearFilter">
+                            </div>
+                            <div class="form-group">
+                                <label for="bpFilter">BP</label>
+                                <input type="text" class="form-control" id="bpFilter">
+                            </div>
+                            <div class="form-group">
+                                <label for="bpPerProblemFilter">BP за задачу</label>
+                                <input type="text" class="form-control" id="bpPerProblemFilter">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="applyFilter()">Применить</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addModalLabel">Добавить элемент</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                                <div class="modal-body">
+                                    <form id="addForm">
+                                       <div class="form-group">
+                                    <label for="addOlympiad">Олимпиада</label>
+                                    <input type="text" class="form-control" id="addOlympiad" placeholder="Введите олимпиаду" required>
+                                     <div id="addOlympiadError" class="error-message"></div>
+                                     </div>
+
+                                <div class="form-group">
+                                    <label for="addTypeSelect">Тип участия</label>
+                                    <select class="form-control" id="addTypeSelect">
+                                             <option value="">-- Выберите тип участия --</option>
+                                             <option value="Командный">Командный</option>
+                                            <option value="Индивидуальный">Индивидуальный</option>
+                                    </select>
+                                    <div id="addTypeSelectError" class="error-message"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addYear">Год</label>
+                                    <input type="text" class="form-control" id="addYear" placeholder="Введите год" required>
+                                     <div id="addYearError" class="error-message"></div>
+                                     </div>
+                                       <div class="form-group">
+                                    <label for="addBp">BP</label>
+                                    <input type="text" class="form-control" id="addBp" placeholder="Введите BP" required>
+                                     <div id="addBpError" class="error-message"></div>
+                                     </div>
+                                       <div class="form-group">
+                                    <label for="addWeightPerProblem">BP за задачу</label>
+                                    <input type="text" class="form-control" id="addWeightPerProblem" placeholder="Введите BP за задачу" required>
+                                     <div id="addWeightPerProblemError" class="error-message"></div>
+                                     </div>
+
+
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="addOlympiadFromModal" class="btn btn-primary">Добавить</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Изменить элемент</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editForm">
+                                 <input type="hidden" id="olympiadId" value="" />
+                           <div class="form-group">
+                                    <label for="editOlympiad">Олимпиада</label>
+                                    <input type="text" class="form-control" id="editOlympiad" placeholder="Введите олимпиаду" required>
+                                    <div id="editOlympiadError" class="error-message"></div>
+                                </div>
+
+
+                                   <div class="form-group">
+                                    <label for="editTypeSelect">Тип участия</label>
+                                    <select class="form-control" id="editTypeSelect">
+                                             <option value="">-- Выберите тип участия --</option>
+                                             <option value="Командный">Командный</option>
+                                            <option value="Индивидуальный">Индивидуальный</option>
+                                    </select>
+                                    <div id="EditTypeSelectError" class="error-message"></div>
+                                </div>
+
+
+                            <div class="form-group">
+                                    <label for="EditYear">Год</label>
+                                    <input type="text" class="form-control" id="EditYear" placeholder="Введите год" required>
+                                     <div id="editYearError" class="error-message"></div>
+                                     </div>
+                                       <div class="form-group">
+                                    <label for="editBp">BP</label>
+                                    <input type="text" class="form-control" id="editBp" placeholder="Введите BP" required>
+                                     <div id="editBpError" class="error-message"></div>
+                                     </div>
+                                       <div class="form-group">
+                                    <label for="editWeightPerProblem">BP за задачу</label>
+                                    <input type="text" class="form-control" id="editWeightPerProblem" placeholder="Введите BP за задачу" required>
+                                     <div id="editWeightPerProblemError" class="error-message"></div>
+                                     </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="saveChangesBtn" class="btn btn-primary">Сохранить</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+         <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resultModalLabel">Положение олимпиады</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <input type="hidden" id="olympiadId" value="" />
+          <div class="table-responsive">
+            <table id="resultTable" class="table table-sm">
+              <tbody></tbody>
+            </table>
+          </div>
+        </form>
+        <div id="errorMessage" style="color: red;"></div> <!-- Элемент для отображения сообщения об ошибке -->
+      </div>
+      <div class="modal-footer">
+        <label for="studentSelect">Студент</label>
+        <select class="form-control" id="studentSelect">
+                        @foreach (var student in ViewBag.Students)
+                        {
+                        <option value="@student.StudentID">@(student.LastName + " " + student.FirstName + " " + student.MiddleName + ": " + student.CodeforcesNickname)</option>
+                        }
+        </select>
+        <div class="button-group">
+          <button type="button" class="btn btn-primary" id="addStudentButton">Добавить студента</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+    </body>
+     <script src="~/js/olympiads.js"></script>
+</html>

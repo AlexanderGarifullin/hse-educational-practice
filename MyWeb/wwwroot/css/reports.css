@@ -1,0 +1,87 @@
+﻿
+.section span {
+    color: #343434;
+    font-size: 24px;
+}
+
+.sumbitButton {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #2C2C2C;
+    font-size: 48px;
+}
+
+
+@-ms-viewport {
+    width: device-width;
+}
+
+@-moz-viewport {
+    width: device-width;
+}
+
+@-o-viewport {
+    width: device-width;
+}
+
+@-webkit-viewport {
+    width: device-width;
+}
+
+@viewport {
+    width: device-width;
+}
+
+
+
+.reports-cards-holder {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: flex-start;
+}
+
+
+.col {
+    margin-top: 20px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    flex-basis: calc(25% - 20px); /* Измените значение flex-basis на 25% для уменьшения размера объектов */
+}
+
+@media screen and (max-width: 767px) {
+    .col {
+        flex-basis: calc(50% - 20px); /* Дополнительное правило для мобильных устройств с максимальной шириной 767 пикселей */
+    }
+}
+
+
+ul.cardsrow li {
+    list-style-type: none;
+}
+
+.submitButton {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+
+.card-footer .submitButton {
+    font-size: inherit;
+    padding: inherit;
+    margin: inherit;
+}
+
+
+.submitButton {
+    color: #2C2C2C;
+    font-size: 48px;
+    display: block; 
+    width: 100%; 
+    text-align: center; 
+}
+

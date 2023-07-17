@@ -1,0 +1,172 @@
+﻿@model List<LessonModel>
+
+
+@{
+    Layout = "_Layout";
+}
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+         <link rel="stylesheet" href="~/css/lessons.css" />
+    </head>
+    <body>
+    <div class="button-container">
+    <button type="button" id="addLessonButton" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Добавить</button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal">Фильтр</button>
+    <button type="button" id="clearFilterButton" class="btn btn-danger" style="display: none;">Очистить фильтр</button>
+        </div>
+
+        <table id="lessonTable" class="table">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Тема</th>
+                    <th>Преподаватель</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var lesson in Model)
+            {
+                <tr data-id="@lesson.LessonID">
+                    <td>@lesson.LessonDate.ToString("dd.MM.yyyy")</td>
+                    <td>@lesson.LessonTopic</td>
+                    <td>@(lesson.Teacher.LastName + " " + lesson.Teacher.FirstName + " " + lesson.Teacher.MiddleName)</td>
+                    <td class="actions-cell">
+                        <button type="button" class="btn btn-primary edit-trigger" data-toggle="modal" data-target="#editModal" data-lesson-id="@lesson.LessonID">Изменить</button>
+                        <button type="button" class="btn btn-danger" data-id="@lesson.LessonID" onclick="deleteLesson(this.getAttribute('data-id'))">Удалить</button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+        <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filterModalLabel">Фильтр</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="lessonDate">Дата</label>
+                                <input type="date" class="form-control" id="lessonDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="lessonTopic">Тема</label>
+                                <input type="text" class="form-control" id="lessonTopic" placeholder="Введите тему">
+                            </div>
+                            <div class="form-group">
+                                <label for="teacherSelect">Преподаватель</label>
+                                <select class="form-control" id="teacherSelect">
+                                    <option value="">-- Выберите преподавателя --</option>
+                                        @foreach (var teacher in ViewBag.Teachers)
+                                        {
+                                            <option value="@teacher.TeacherID">@($"{teacher.LastName} {teacher.FirstName} {teacher.MiddleName}")</option>
+                                        }
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="applyFilter()">Применить</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addModalLabel">Добавить элемент</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addForm">
+                                <div class="form-group">
+                                    <label for="addLessonDate">Дата</label>
+                                    <input type="date" class="form-control" id="addLessonDate">
+                                    <div id="addLessonDateError" class="error-message"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addLessonTopic">Тема</label>
+                                    <input type="text" class="form-control" id="addLessonTopic" placeholder="Введите тему">
+                                    <div id="addLessonTopicError" class="error-message"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addTeacherSelect">Преподаватель</label>
+                                    <select class="form-control" id="addTeacherSelect">
+                                        <option value="">-- Выберите преподавателя --</option>
+                                            @foreach (var teacher in ViewBag.Teachers)
+                                            {
+                                                <option value="@teacher.TeacherID">@($"{teacher.LastName} {teacher.FirstName} {teacher.MiddleName}")</option>
+                                            }
+                                    </select>
+                                    <div id="addTeacherSelectError" class="error-message"></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="addLessonFromModal" class="btn btn-primary">Добавить</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Изменить элемент</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editForm">
+                                 <input type="hidden" id="lessonId" value="" />
+                            <div class="form-group">
+                                <label for="editLessonDate">Дата</label>
+                                <input type="date" class="form-control" id="editLessonDate">
+                                <div id="editLessonDateError" class="error-message"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="editLessonTopic">Тема</label>
+                                <input type="text" class="form-control" id="editLessonTopic" placeholder="Введите тему">
+                                <div id="editLessonTopicError" class="error-message"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="editTeacherSelect">Преподаватель</label>
+                                <select class="form-control" id="editTeacherSelect">
+                                    <option value="">-- Выберите преподавателя --</option>
+                                        @foreach (var teacher in ViewBag.Teachers)
+                                        {
+                                            <option value="@teacher.TeacherID">@($"{teacher.LastName} {teacher.FirstName} {teacher.MiddleName}")</option>
+                                        }
+                                </select>
+                                <div id="editTeacherSelectError" class="error-message"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="saveChangesBtn" class="btn btn-primary">Сохранить</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+                <script src="~/js/lessons.js"></script>
+
+    </body>
+</html>

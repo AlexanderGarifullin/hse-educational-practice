@@ -1,0 +1,156 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<html  lang="en">
+<head>
+     <meta charset="UTF-8">
+    <link rel="stylesheet" href="~/css/reports.css" />
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <div class="reports-cards-holder">
+                <ul class="cardsrow">
+                    <li class="col rating">
+                        <div class="card">
+                            <div class="card-body">
+                                 <button type="button" class="submitButton" id="ratingButton">Рейтинг</button>
+                            </div>
+                            <div class="card-footer">
+                                <span>Получить рейтинг факультатива</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col contest">
+                        <div class="card">
+                            <div class="card-body">
+                                <button type="button" class="submitButton" data-toggle="modal" data-target="#contestModal">Контест</button>
+                            </div>
+                            <div class="card-footer">
+                                <span>Получить положение контеста</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col olympiad">
+                        <div class="card">
+                            <div class="card-body">
+                                <button type="button" class="submitButton" data-toggle="modal" data-target="#olympiadModal">Олимпиада</button>
+                            </div>
+                            <div class="card-footer">
+                                <span>Получить положение олимпиады</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col tasks-by-difficulty">
+                        <div class="card">
+                            <div class="card-body">
+                                <button type="submit" class="submitButton" name="reportId" value="4" data-toggle="modal" data-target="#difficultyModal">Задачи по сложности</button>
+                            </div>
+                            <div class="card-footer">
+                                <span>Получить задачи определенной сложности</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="col tasks-by-theme">
+                        <div class="card">
+                            <div class="card-body">
+                                <button type="button" class="submitButton" data-toggle="modal" data-target="#themeModal">Задачи по теме</button>
+                            </div>
+                            <div class="card-footer">
+                                <span>Получить задачи определенной темы</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="contestModal" tabindex="-1" role="dialog" aria-labelledby="contestModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contestModalLabel">Выберите контест</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <select id="contestSelect" class="form-control"></select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="confirmButton">ОК</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="modal fade" id="olympiadModal" tabindex="-1" role="dialog" aria-labelledby="olympiadModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="olympiadModalLabel">Выберите олимпиаду</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <select id="olympiadSelect" class="form-control"></select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="olympiadConfirmButton">ОК</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="difficultyModal" tabindex="-1" role="dialog" aria-labelledby="difficultyModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="difficultyModalLabel">Выберите сложность задач</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <select id="difficultySelect" class="form-control">
+                    </select>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="difficultyConfirmButton">ОК</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        <div class="modal fade" id="themeModal" tabindex="-1" role="dialog" aria-labelledby="themeModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="themeModalLabel">Выберите тему задач</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <select id="themeSelect" class="form-control"></select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="themeConfirmButton">ОК</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="~/lib/popper.js/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="~/js/report.js"></script>
+</body>
+</html>
